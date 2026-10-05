@@ -230,8 +230,8 @@ El comportamiento íntegro del pipeline se parametriza mediante un archivo JSON 
 
 ```bash
 # 1. Clonar el repositorio
-git clone https://github.com/aimarlarriba/SAD-Clasificacion-Automatizada.git
-cd SAD-Clasificacion-Automatizada
+git clone https://github.com/aimarlarriba/frequency-analysis-cipher-cli.git
+cd frequency-analysis-cipher-cli
 
 # 2. Crear el entorno virtual
 python -m venv venv
