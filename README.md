@@ -66,10 +66,10 @@ flowchart TD
 
     subgraph PREP["2. Preprocesamiento & División Segura"]
         ORCH --> SPLIT{"¿test_split > 0?"}
-        SPLIT -- Sí --> TEST_AUTO["Exportar Test Holdout<br/>(test_automatico_*.csv)"]
-        SPLIT --> TRAIN_SET["Partición Train / Dev (80/20 Stratified)"]
+        SPLIT -->|Sí| TEST_AUTO["Exportar Test Holdout<br/>test_automatico_*.csv"]
+        SPLIT -->|No| TRAIN_SET["Partición Train / Dev (80/20 Stratified)"]
         
-        TRAIN_SET --> NLP["NLP: Tokenize + Porter Stemmer + TF-IDF/BoW"]
+        TRAIN_SET --> NLP["NLP: Tokenize + Porter Stemmer + TF-IDF / BoW"]
         NLP --> OHE["One-Hot Encoding Defensivo (drop_first=True)"]
         OHE --> IMPUT["Imputación Univariante (Mean / Median / Mode)"]
         IMPUT --> SCALE["Escalado Numérico (StandardScaler Z-Score)"]
@@ -83,20 +83,23 @@ flowchart TD
         GRID --> RF["Random Forest"]
         GRID --> NB["Naive Bayes (Categorical / Gaussian)"]
         
-        KNN & DT & RF & NB --> EVAL["Evaluación en Dev (F1, Accuracy, Precision, Recall)"]
+        KNN --> EVAL["Evaluación en Dev<br/>(F1, Accuracy, Precision, Recall)"]
+        DT --> EVAL
+        RF --> EVAL
+        NB --> EVAL
     end
 
     subgraph GOV["4. Gobernanza de Modelos (Model Registry)"]
         EVAL --> COMP{"¿Supera al Campeón Actual?"}
-        COMP -- No --> REJ["Registrar Log de Auditoría"]
-        COMP -- Sí --> ARCH["Archivar Campeón Anterior en archivo_versiones/"]
+        COMP -->|No| REJ["Registrar Log de Auditoría"]
+        COMP -->|Sí| ARCH["Archivar Campeón Anterior en archivo_versiones/"]
         ARCH --> SAVE["Promover Nuevo Campeón:<br/>bestmodel.sav + preprocessing_objects.sav"]
         SAVE --> LOG["Exportar Benchmark: ultimos_resultados.csv"]
     end
 
     subgraph INFER["5. Inferencia en Producción (Zero Leakage)"]
         NEW_DATA["Nuevas Instancias (Test CSV)"] --> TEST_EXEC["test.py"]
-        SAVE -. Deserialización de Artefactos .- -> TEST_EXEC
+        SAVE -.->|Deserialización| TEST_EXEC
         TEST_EXEC --> ALIGN["Alineación de Columnas (reindex defensivo)"]
         ALIGN --> PREDS["Predicciones Etiquetadas + Matriz de Confusión"]
     end
