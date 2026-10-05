@@ -328,7 +328,7 @@ Este framework ha sido concebido como un núcleo extensible para sistemas MLOps 
 Desarrollado y mantenido por:
 
 * **Aimar Larriba** — [GitHub](https://github.com/aimarlarriba)
-* **Lou Gómez** — [GitHub](https://github.com/lougomez)
+* **Lou Gómez** — [GitHub](https://github.com/lougomeez)
 
 ---
 
