@@ -56,7 +56,10 @@ def registrar_metrica(y_true, y_pred, nom, pars, avg):
 # FUNCION PARA PROCESAMIENTO DE TEXTO
 # ---------------------------------------------------------
 def limpiar_texto_libre(texto, idioma):
-    stop_words = set(stopwords.words(idioma))
+    try:
+        stop_words = set(stopwords.words(idioma))
+    except:
+        stop_words = set()
     stemmer = PorterStemmer()
 
     # Tokenización y limpieza
@@ -309,12 +312,10 @@ def train():
     text_cfg = conf_pre.get('text_processing', {})
     text_columns = text_cfg.get('columns', [])
     vectorizador = None
+    idioma = text_cfg.get('language', 'spanish')
 
     if text_cfg.get('enabled', False) and text_columns:
         print(f"[*] Procesando y limpiando columnas de texto: {text_columns}")
-
-        # Obtener idioma del JSON (por defecto 'english')
-        idioma = text_cfg.get('language', 'spanish')
 
         for col in text_columns:
             # PASO 1: Limpiar el texto (minúsculas, stopwords, stemmer)
