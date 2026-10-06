@@ -1,4 +1,4 @@
-[🇬🇧 English](README.md) | [🇪🇸 Español](README.es.md)
+🌐 **Language / Idioma:** [English](README.md) • [Español](README.es.md)
 
 # AutoML Classification Engine & Model Governance Pipeline
 
